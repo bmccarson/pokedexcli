@@ -7,6 +7,39 @@ import (
 	"strings"
 )
 
+type cliCommand struct {
+	name        string
+	description string
+	callback    func() error
+}
+
+var commands = map[string]cliCommand{
+	"exit": {
+		name:        "exit",
+		description: "Exit the Pokedex",
+	},
+	"help": {
+		name:        "help",
+		description: "Displays a help message",
+	},
+}
+
+func commandExit() error {
+	fmt.Print("Closing the Pokedex... Goodbye!")
+	os.Exit(0)
+	return nil
+}
+
+func commandHelp() error {
+	fmt.Println("Welcome to the Pokedex!")
+	fmt.Println("Usage:")
+
+	for _, v := range commands {
+		fmt.Printf("%s: %s\n", v.name, v.description)
+	}
+	return nil
+}
+
 func cleanInput(text string) []string {
 	cleanedInput := []string{}
 
@@ -30,8 +63,13 @@ func main() {
 		scanner.Scan()
 		input := cleanInput(scanner.Text())
 
-		word := input[0]
+		command := input[0]
 
-		fmt.Printf("Your command was: %s\n", string(word))
+		switch command {
+		case "exit":
+			commandExit()
+		case "help":
+			commandHelp()
+		}
 	}
 }
