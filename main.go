@@ -5,40 +5,12 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/bmccarson/pokedexcli/internal/commands"
+	"github.com/bmccarson/pokedexcli/internal/state"
 )
 
-type cliCommand struct {
-	name        string
-	description string
-	callback    func() error
-}
-
-var commands = map[string]cliCommand{
-	"exit": {
-		name:        "exit",
-		description: "Exit the Pokedex",
-	},
-	"help": {
-		name:        "help",
-		description: "Displays a help message",
-	},
-}
-
-func commandExit() error {
-	fmt.Print("Closing the Pokedex... Goodbye!")
-	os.Exit(0)
-	return nil
-}
-
-func commandHelp() error {
-	fmt.Println("Welcome to the Pokedex!")
-	fmt.Println("Usage:")
-
-	for _, v := range commands {
-		fmt.Printf("%s: %s\n", v.name, v.description)
-	}
-	return nil
-}
+const APIEndpoint = "https://pokeapi.co/api/v2/"
 
 func cleanInput(text string) []string {
 	cleanedInput := []string{}
@@ -55,6 +27,9 @@ func cleanInput(text string) []string {
 }
 
 func main() {
+	inputCommands := commands.Init()
+	data := state.Init(APIEndpoint)
+
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
@@ -65,11 +40,14 @@ func main() {
 
 		command := input[0]
 
-		switch command {
-		case "exit":
-			commandExit()
-		case "help":
-			commandHelp()
+		if key, exists := inputCommands[command]; exists {
+			err := key.Callback(&data)
+
+			if err != nil {
+				fmt.Println(err)
+			}
+		} else {
+			fmt.Println("command does not exisist")
 		}
 	}
 }
