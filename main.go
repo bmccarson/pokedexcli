@@ -5,12 +5,16 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/bmccarson/pokedexcli/internal/commands"
 	"github.com/bmccarson/pokedexcli/internal/state"
 )
 
-const APIEndpoint = "https://pokeapi.co/api/v2/"
+const (
+	APIEndpoint       string        = "https://pokeapi.co/api/v2/"
+	APICachePurgeTime time.Duration = time.Second * 30
+)
 
 func cleanInput(text string) []string {
 	cleanedInput := []string{}
@@ -28,7 +32,7 @@ func cleanInput(text string) []string {
 
 func main() {
 	inputCommands := commands.Init()
-	data := state.Init(APIEndpoint, 5)
+	data := state.Init(APIEndpoint, APICachePurgeTime)
 
 	scanner := bufio.NewScanner(os.Stdin)
 

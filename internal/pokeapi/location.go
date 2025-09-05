@@ -37,6 +37,7 @@ func GetLocations(url string, cache *pokecache.PokeCache) (Locations, error) {
 		}
 
 		cache.Add(url, data)
+		fmt.Println("Didnt use Cache")
 	}
 
 	err := json.Unmarshal(data, &locations)
