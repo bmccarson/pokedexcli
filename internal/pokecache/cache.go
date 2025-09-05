@@ -54,13 +54,13 @@ func (pc *PokeCache) Get(key string) ([]byte, bool) {
 func (pc *PokeCache) reapLoop() {
 	for {
 		time.Sleep(pc.interval)
-
+		pc.mu.Lock()
 		for key, entry := range pc.cache {
 			if entry.createdAt.After(time.Now().Add(-pc.interval)) {
-				pc.mu.Lock()
 				delete(pc.cache, key)
-				pc.mu.Unlock()
+
 			}
 		}
+		pc.mu.Unlock()
 	}
 }
