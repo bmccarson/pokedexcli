@@ -9,7 +9,7 @@ import (
 )
 
 func Map(data *state.DataStore) error {
-	locations, err := pokeapi.GetLoactions(data.NextLocationURL)
+	locations, err := pokeapi.GetLocations(data.NextLocationURL, data.APICache)
 
 	if err != nil {
 		return err
@@ -30,7 +30,7 @@ func Mapb(data *state.DataStore) error {
 		return errors.New("can not go to previous from first location")
 	}
 
-	locations, err := pokeapi.GetLoactions(data.PreviousLocationURL)
+	locations, err := pokeapi.GetLocations(data.PreviousLocationURL, data.APICache)
 
 	if err != nil {
 		return err

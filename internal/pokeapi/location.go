@@ -2,7 +2,12 @@ package pokeapi
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
 	"net/http"
+
+	"github.com/bmccarson/pokedexcli/internal/pokecache"
 )
 
 type Locations struct {
@@ -15,19 +20,28 @@ type Locations struct {
 	} `json:"results"`
 }
 
-func GetLoactions(url string) (Locations, error) {
+func GetLocations(url string, cache *pokecache.PokeCache) (Locations, error) {
 	locations := Locations{}
 
-	res, err := http.Get(url)
-	if err != nil {
-		return Locations{}, err
-	}
-	defer res.Body.Close()
+	data, inCache := cache.Get(url)
+	if inCache == false {
+		res, err := http.Get(url)
+		if err != nil {
+			return locations, err
+		}
+		data, err = io.ReadAll(res.Body)
+		res.Body.Close()
 
-	decoder := json.NewDecoder(res.Body)
-	err = decoder.Decode(&locations)
+		if res.StatusCode > 299 {
+			return locations, fmt.Errorf("Response failed: Status Code %d", res.StatusCode)
+		}
+
+		cache.Add(url, data)
+	}
+
+	err := json.Unmarshal(data, &locations)
 	if err != nil {
-		return Locations{}, err
+		return locations, errors.New("Error converting JSON response")
 	}
 
 	return locations, nil

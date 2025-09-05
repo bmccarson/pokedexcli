@@ -28,7 +28,7 @@ func cleanInput(text string) []string {
 
 func main() {
 	inputCommands := commands.Init()
-	data := state.Init(APIEndpoint)
+	data := state.Init(APIEndpoint, 5)
 
 	scanner := bufio.NewScanner(os.Stdin)
 
