@@ -2,7 +2,6 @@ package pokeapi
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -18,9 +17,8 @@ type Locations struct {
 
 func GetLoactions(url string) (Locations, error) {
 	locations := Locations{}
-	endpoint := fmt.Sprintf("%s/location-area/", url)
 
-	res, err := http.Get(endpoint)
+	res, err := http.Get(url)
 	if err != nil {
 		return Locations{}, err
 	}
