@@ -6,9 +6,8 @@ import (
 )
 
 type PokeCache struct {
-	cache    map[string]cacheEntry
-	interval time.Duration
-	mu       sync.Mutex
+	cache map[string]cacheEntry
+	mu    *sync.Mutex
 }
 
 type cacheEntry struct {
@@ -18,12 +17,11 @@ type cacheEntry struct {
 
 func New(interval time.Duration) *PokeCache {
 	cache := PokeCache{
-		cache:    make(map[string]cacheEntry),
-		interval: interval,
-		mu:       sync.Mutex{},
+		cache: make(map[string]cacheEntry),
+		mu:    &sync.Mutex{},
 	}
 
-	go cache.reapLoop()
+	go cache.reapLoop(interval)
 
 	return &cache
 }
@@ -51,14 +49,14 @@ func (pc *PokeCache) Get(key string) ([]byte, bool) {
 	return nil, false
 }
 
-func (pc *PokeCache) reapLoop() {
-	for {
-		time.Sleep(pc.interval)
+func (pc *PokeCache) reapLoop(interval time.Duration) {
+	ticker := time.NewTicker(interval)
+
+	for range ticker.C {
 		pc.mu.Lock()
 		for key, entry := range pc.cache {
-			if entry.createdAt.After(time.Now().Add(-pc.interval)) {
+			if entry.createdAt.Before(time.Now().Add(-interval)) {
 				delete(pc.cache, key)
-
 			}
 		}
 		pc.mu.Unlock()
