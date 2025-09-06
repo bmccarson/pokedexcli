@@ -37,7 +37,6 @@ func GetArea(url string, cache *pokecache.PokeCache) (Area, error) {
 		}
 
 		cache.Add(url, data)
-		fmt.Println("Didnt use Cache")
 	}
 
 	err := json.Unmarshal(data, &area)

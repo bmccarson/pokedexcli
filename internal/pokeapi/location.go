@@ -11,10 +11,10 @@ import (
 )
 
 type Location struct {
-	Id       int `json:"id"`
+	ID       int `json:"id"`
 	Location struct {
 		Name string `json:"name"`
-		Url  string `json:"url"`
+		URL  string `json:"url"`
 	} `json:"location"`
 	Name              string `json:"name"`
 	PokemonEncounters []struct {
@@ -30,7 +30,7 @@ func GetLocation(url string, loc string, cache *pokecache.PokeCache) (Location, 
 
 	data, inCache := cache.Get(url + "location-area/" + loc)
 	if inCache == false {
-		res, err := http.Get(url)
+		res, err := http.Get(url + "location-area/" + loc)
 		if err != nil {
 			return location, err
 		}
@@ -42,7 +42,6 @@ func GetLocation(url string, loc string, cache *pokecache.PokeCache) (Location, 
 		}
 
 		cache.Add(url, data)
-		fmt.Println("Didnt use Cache")
 	}
 
 	err := json.Unmarshal(data, &location)
