@@ -9,39 +9,39 @@ import (
 )
 
 func Map(data *state.DataStore, _ string) error {
-	locations, err := pokeapi.GetLocations(data.NextLocationURL, data.APICache)
+	area, err := pokeapi.GetArea(data.NextAreaURL, data.APICache)
 
 	if err != nil {
 		return err
 	}
 
-	for _, loc := range locations.Results {
+	for _, loc := range area.Results {
 		fmt.Println(loc.Name)
 	}
 
-	data.NextLocationURL = locations.Next
-	data.PreviousLocationURL = locations.Previous
+	data.NextAreaURL = area.Next
+	data.PreviousAreaURL = area.Previous
 
 	return nil
 }
 
 func Mapb(data *state.DataStore, _ string) error {
-	if data.PreviousLocationURL == "" {
+	if data.PreviousAreaURL == "" {
 		return errors.New("can not go to previous from first location")
 	}
 
-	locations, err := pokeapi.GetLocations(data.PreviousLocationURL, data.APICache)
+	area, err := pokeapi.GetArea(data.PreviousAreaURL, data.APICache)
 
 	if err != nil {
 		return err
 	}
 
-	for _, loc := range locations.Results {
+	for _, loc := range area.Results {
 		fmt.Println(loc.Name)
 	}
 
-	data.NextLocationURL = locations.Next
-	data.PreviousLocationURL = locations.Previous
+	data.NextAreaURL = area.Next
+	data.PreviousAreaURL = area.Previous
 
 	return nil
 }
