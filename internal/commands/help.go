@@ -6,7 +6,7 @@ import (
 	"github.com/bmccarson/pokedexcli/internal/state"
 )
 
-func Help(_ *state.DataStore) error {
+func Help(_ *state.DataStore, _ string) error {
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage:")
 

@@ -8,7 +8,7 @@ import (
 	"github.com/bmccarson/pokedexcli/internal/state"
 )
 
-func Map(data *state.DataStore) error {
+func Map(data *state.DataStore, _ string) error {
 	locations, err := pokeapi.GetLocations(data.NextLocationURL, data.APICache)
 
 	if err != nil {
@@ -25,7 +25,7 @@ func Map(data *state.DataStore) error {
 	return nil
 }
 
-func Mapb(data *state.DataStore) error {
+func Mapb(data *state.DataStore, _ string) error {
 	if data.PreviousLocationURL == "" {
 		return errors.New("can not go to previous from first location")
 	}

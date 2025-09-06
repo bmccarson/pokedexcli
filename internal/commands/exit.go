@@ -7,7 +7,7 @@ import (
 	"github.com/bmccarson/pokedexcli/internal/state"
 )
 
-func Exit(_ *state.DataStore) error {
+func Exit(_ *state.DataStore, _ string) error {
 	fmt.Print("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil

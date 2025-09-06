@@ -43,9 +43,10 @@ func main() {
 		input := cleanInput(scanner.Text())
 
 		command := input[0]
+		arg := input[1]
 
 		if key, exists := inputCommands[command]; exists {
-			err := key.Callback(&data)
+			err := key.Callback(&data, arg)
 
 			if err != nil {
 				fmt.Println(err)
