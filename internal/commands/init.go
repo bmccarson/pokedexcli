@@ -28,6 +28,11 @@ func Init() map[string]CliCommand {
 		Description: "enter a location name to see Pokemon in that area",
 		Callback:    Explore,
 	}
+	commands["catch"] = CliCommand{
+		Name:        "catch",
+		Description: "Attempt to catch the entered pokemon",
+		Callback:    Catch,
+	}
 	commands["exit"] = CliCommand{
 		Name:        "exit",
 		Description: "Exit the Pokedex",
