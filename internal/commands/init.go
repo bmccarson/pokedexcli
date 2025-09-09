@@ -15,23 +15,28 @@ func Init() map[string]CliCommand {
 
 	commands["map"] = CliCommand{
 		Name:        "map",
-		Description: "display map locations",
+		Description: "Display map locations",
 		Callback:    Map,
 	}
 	commands["mapb"] = CliCommand{
 		Name:        "mapb",
-		Description: "display previous map locations",
+		Description: "Display previous map locations",
 		Callback:    Mapb,
 	}
 	commands["explore"] = CliCommand{
 		Name:        "explore",
-		Description: "enter a location name to see Pokemon in that area",
+		Description: "Enter a location name to see Pokemon in that area",
 		Callback:    Explore,
 	}
 	commands["catch"] = CliCommand{
 		Name:        "catch",
 		Description: "Attempt to catch the entered pokemon",
 		Callback:    Catch,
+	}
+	commands["inspect"] = CliCommand{
+		Name:        "inspect",
+		Description: "Inspect a caught Pokemon",
+		Callback:    Inspect,
 	}
 	commands["exit"] = CliCommand{
 		Name:        "exit",
