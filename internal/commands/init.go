@@ -38,6 +38,11 @@ func Init() map[string]CliCommand {
 		Description: "Inspect a caught Pokemon",
 		Callback:    Inspect,
 	}
+	commands["pokedex"] = CliCommand{
+		Name:        "pokedex",
+		Description: "List all caught Pokemon",
+		Callback:    Pokedex,
+	}
 	commands["exit"] = CliCommand{
 		Name:        "exit",
 		Description: "Exit the Pokedex",
